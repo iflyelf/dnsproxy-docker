@@ -6,7 +6,7 @@ bootstrap:
 # 监听地址
 listen-addrs:
   - "0.0.0.0"
-# UPD监听端开
+# UPD监听端口
 listen-ports:
   - 5353
 # TLS监听端口
@@ -15,7 +15,7 @@ tls-port:
 # DOH监听端口
 https-port:
   - 813
-# 证书公钥 
+# 证书公钥
 tls-crt: ''
 # 证书私钥
 tls-key: ''
