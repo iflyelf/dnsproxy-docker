@@ -62,6 +62,10 @@ listen-ports:
 tls-port:
   - 853
 
+# DoH 监听端口
+https-port:
+  - 813
+
 # 上游 DNS 服务器
 upstream:
   - "tcp://127.0.0.1:53"
@@ -71,7 +75,8 @@ upstream:
 ## 端口说明
 
 - `5353/udp` - DNS 服务端口
-- `853/tcp` - DNS-over-TLS 端口
+- `853/tcp` - DNS-over-TLS (DoT) 端口
+- `813/tcp` - DNS-over-HTTPS (DoH) 端口
 
 ## 构建信息
 
