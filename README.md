@@ -1,6 +1,6 @@
 # dnsproxy-docker
 
-基于 Ubuntu 的 dnsproxy Docker 镜像，支持 DNS-over-HTTPS (DoH) 和 DNS-over-TLS (DoT)。
+基于 Ubuntu 的 dnsproxy Docker 镜像，支持多种加密 DNS 协议。
 
 ## 项目说明
 
@@ -12,8 +12,10 @@
 - ✅ 完整的开发工具链（gcc、g++、golang、python3、nodejs）
 - ✅ 支持多架构（amd64、arm64）
 - ✅ 自动从 GitHub 获取最新 dnsproxy 版本
-- ✅ 支持 DNS-over-HTTPS (DoH)
-- ✅ 支持 DNS-over-TLS (DoT)
+- ✅ 支持 DNS-over-TLS (DoT) - 使用 TLS 加密的 DNS 查询，安全性高
+- ✅ 支持 DNS-over-HTTPS (DoH) - 使用 HTTPS 加密的 DNS 查询，兼容性强
+- ✅ 支持 DNS-over-QUIC (DoQ) - 使用 QUIC 协议的 DNS 查询，低延迟
+- ✅ 支持 DNS-over-HTTP/3 (DoH3) - 基于 HTTP/3 协议的 DNS 查询，兼具低延迟与加密
 - ✅ 中文环境优化（时区、字体、输入法）
 - ✅ 配置文件热加载
 
@@ -58,13 +60,20 @@ listen-addrs:
 listen-ports:
   - 5353
 
-# TLS 监听端口
+# DNS-over-TLS (DoT) 监听端口
 tls-port:
   - 853
 
-# DoH 监听端口
+# DNS-over-HTTPS (DoH) 监听端口
 https-port:
   - 813
+
+# DNS-over-QUIC (DoQ) 监听端口
+quic-port:
+  - 8853
+
+# 启用 HTTP/3 支持 (DoH3 与 DoH 共用 https-port 端口)
+http3: true
 
 # 上游 DNS 服务器
 upstream:
@@ -75,8 +84,10 @@ upstream:
 ## 端口说明
 
 - `5353/udp` - DNS 服务端口
-- `853/tcp` - DNS-over-TLS (DoT) 端口
-- `813/tcp` - DNS-over-HTTPS (DoH) 端口
+- `853/tcp` - **DNS-over-TLS (DoT)** - 使用 TLS 加密的 DNS 查询，安全性高
+- `813/tcp` - **DNS-over-HTTPS (DoH)** - 使用 HTTPS 加密的 DNS 查询，兼容性强
+- `813/tcp` - **DNS-over-HTTP/3 (DoH3)** - 基于 HTTP/3 协议的 DNS 查询（与 DoH 共用端口，通过 `http3: true` 启用），兼具低延迟与加密
+- `8853/udp` - **DNS-over-QUIC (DoQ)** - 使用 QUIC 协议的 DNS 查询，低延迟
 
 ## 构建信息
 

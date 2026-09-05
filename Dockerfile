@@ -265,7 +265,7 @@ STOPSIGNAL SIGQUIT
 VOLUME /etc/dnsproxy
 
 # 暴露端口
-EXPOSE 5353/udp 853/tcp 813/tcp
+EXPOSE 5353/udp 853/tcp 813/tcp 8853/udp
 
 # 执行命令
 CMD ["/usr/bin/dnsproxy", "--config-path=/etc/dnsproxy/config.yaml"]
