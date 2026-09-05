@@ -120,6 +120,42 @@ docker restart dnsproxy
 > - 使用 `network_mode: host` 时容器直接使用宿主机网络，配置文件端口即为实际端口。
 > - 若使用端口映射（非 host 模式），需同步调整 `docker-compose.yml` 中的 `ports` 映射。
 
+## Nginx 代理 DoH/DoH3
+
+当 443 端口被 Nginx 占用时，可让 Nginx 在 443 上同时终结 HTTP/2 (TCP) 和 HTTP/3 (QUIC/UDP)，反向代理到 dnsproxy 的 DoH 端口 (813)。示例配置见 `conf/nginx/doh3.conf`：
+
+```nginx
+server {
+    # HTTP/3 (QUIC over UDP)
+    listen 443 quic reuseport;
+    # HTTP/2 回退 (TCP)
+    listen 443 ssl;
+
+    http2 on;
+    server_name dns.example.com;
+
+    ssl_certificate     /ssl/cert.pem;
+    ssl_certificate_key /ssl/key.pem;
+
+    # 通告客户端支持 HTTP/3
+    add_header Alt-Svc 'h3=":443"; ma=86400' always;
+
+    # 正则匹配 DoH 查询路径
+    location ~ ^/(dns-query|resolve)$ {
+        proxy_pass http://127.0.0.1:813;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_buffering off;
+        proxy_request_buffering off;
+    }
+}
+```
+
+> **要求**：
+> - Nginx 1.25.0+ 且编译时启用 QUIC/HTTP3 模块。
+> - QUIC 基于 UDP，与 TCP 的 443 独立共存，需放行防火墙的 `443/udp`。
+> - Nginx 终结 HTTP/3 后转普通 HTTP 转发，dnsproxy 只需开启 DoH (TCP 813)，无需单独开 DoH3。
+
 ## 构建信息
 
 ### 环境变量
