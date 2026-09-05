@@ -56,11 +56,11 @@ docker-compose up -d
 listen-addrs:
   - "0.0.0.0"
 
-# UDP 监听端口
+# UDP 监听端口 (标准 DNS 端口)
 listen-ports:
-  - 5353
+  - 53
 
-# DNS-over-TLS (DoT) 监听端口
+# DNS-over-TLS (DoT) 监听端口 (标准端口 853)
 tls-port:
   - 853
 
@@ -83,7 +83,9 @@ upstream:
 
 ## 端口说明
 
-- `5353/udp` - DNS 服务端口
+所有端口均使用 IETF 标准端口：
+
+- `53/udp` + `53/tcp` - **DNS** - 标准 DNS 服务端口
 - `853/tcp` - **DNS-over-TLS (DoT)** - 使用 TLS 加密的 DNS 查询，安全性高
 - `853/udp` - **DNS-over-QUIC (DoQ)** - 使用 QUIC 协议的 DNS 查询，低延迟（与 DoT 共用端口号但协议不同）
 - `443/tcp` - **DNS-over-HTTPS (DoH)** - 使用 HTTPS 加密的 DNS 查询，兼容性强

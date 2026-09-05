@@ -6,9 +6,9 @@ bootstrap:
 # 监听地址
 listen-addrs:
   - "0.0.0.0"
-# UDP监听端口
+# UDP 监听端口 (标准 DNS 端口)
 listen-ports:
-  - 5353
+  - 53
 # DNS-over-TLS (DoT) 监听端口
 tls-port:
   - 853
