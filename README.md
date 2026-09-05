@@ -56,17 +56,17 @@ docker-compose up -d
 listen-addrs:
   - "0.0.0.0"
 
-# UDP 监听端口 (标准 DNS 端口)
+# UDP 监听端口 (标准端口 53，因被系统占用改为 5353)
 listen-ports:
-  - 53
+  - 5353
 
 # DNS-over-TLS (DoT) 监听端口 (标准端口 853)
 tls-port:
   - 853
 
-# DNS-over-HTTPS (DoH) 监听端口 (标准端口 443)
+# DNS-over-HTTPS (DoH) 监听端口 (标准端口 443，因被 nginx 占用改为 813)
 https-port:
-  - 443
+  - 813
 
 # DNS-over-QUIC (DoQ) 监听端口 (标准端口 UDP 853)
 quic-port:
@@ -83,13 +83,13 @@ upstream:
 
 ## 端口说明
 
-所有端口均使用 IETF 标准端口：
+本项目部分端口因宿主机冲突已调整（括号内为 IETF 标准端口）：
 
-- `53/udp` + `53/tcp` - **DNS** - 标准 DNS 服务端口
-- `853/tcp` - **DNS-over-TLS (DoT)** - 使用 TLS 加密的 DNS 查询，安全性高
-- `853/udp` - **DNS-over-QUIC (DoQ)** - 使用 QUIC 协议的 DNS 查询，低延迟（与 DoT 共用端口号但协议不同）
-- `443/tcp` - **DNS-over-HTTPS (DoH)** - 使用 HTTPS 加密的 DNS 查询，兼容性强
-- `443/udp` - **DNS-over-HTTP/3 (DoH3)** - 基于 HTTP/3 协议的 DNS 查询（与 DoH 共用端口号，通过 `http3: true` 启用），兼具低延迟与加密
+- `5353/udp` + `5353/tcp` - **DNS** - 标准 DNS 服务端口（标准端口 53，因被系统占用改为 5353）
+- `853/tcp` - **DNS-over-TLS (DoT)** - 使用 TLS 加密的 DNS 查询，安全性高（标准端口 853）
+- `853/udp` - **DNS-over-QUIC (DoQ)** - 使用 QUIC 协议的 DNS 查询，低延迟（标准端口 853，与 DoT 共用端口号但协议不同）
+- `813/tcp` - **DNS-over-HTTPS (DoH)** - 使用 HTTPS 加密的 DNS 查询，兼容性强（标准端口 443，因被 nginx 占用改为 813）
+- `813/udp` - **DNS-over-HTTP/3 (DoH3)** - 基于 HTTP/3 协议的 DNS 查询（标准端口 443，与 DoH 共用端口号，通过 `http3: true` 启用），兼具低延迟与加密
 
 ## 自定义端口
 
