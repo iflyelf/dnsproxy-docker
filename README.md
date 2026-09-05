@@ -91,6 +91,35 @@ upstream:
 - `443/tcp` - **DNS-over-HTTPS (DoH)** - 使用 HTTPS 加密的 DNS 查询，兼容性强
 - `443/udp` - **DNS-over-HTTP/3 (DoH3)** - 基于 HTTP/3 协议的 DNS 查询（与 DoH 共用端口号，通过 `http3: true` 启用），兼具低延迟与加密
 
+## 自定义端口
+
+配置目录通过 `VOLUME /etc/dnsproxy` 挂载到宿主机，如遇端口冲突（例如宿主机 53/443/853 已被占用），可修改 `config.yaml` 中对应的端口配置：
+
+```yaml
+# 修改示例：将端口改为非标准端口以避免冲突
+listen-ports:
+  - 5353      # DNS: 53 -> 5353
+tls-port:
+  - 8853      # DoT: 853 -> 8853
+https-port:
+  - 8443      # DoH: 443 -> 8443
+quic-port:
+  - 8853      # DoQ: 853 -> 8853
+```
+
+修改后重启容器生效：
+
+```bash
+docker-compose restart
+# 或
+docker restart dnsproxy
+```
+
+> **提示**：
+> - 若禁用某个协议，将对应端口设为 `0` 即可（如 `tls-port: [0]` 禁用 DoT）。
+> - 使用 `network_mode: host` 时容器直接使用宿主机网络，配置文件端口即为实际端口。
+> - 若使用端口映射（非 host 模式），需同步调整 `docker-compose.yml` 中的 `ports` 映射。
+
 ## 构建信息
 
 ### 环境变量
