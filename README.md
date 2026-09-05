@@ -68,9 +68,9 @@ tls-port:
 https-port:
   - 813
 
-# DNS-over-QUIC (DoQ) 监听端口
+# DNS-over-QUIC (DoQ) 监听端口 (标准端口 UDP 853)
 quic-port:
-  - 8853
+  - 853
 
 # 启用 HTTP/3 支持 (DoH3 与 DoH 共用 https-port 端口)
 http3: true
@@ -85,9 +85,9 @@ upstream:
 
 - `5353/udp` - DNS 服务端口
 - `853/tcp` - **DNS-over-TLS (DoT)** - 使用 TLS 加密的 DNS 查询，安全性高
+- `853/udp` - **DNS-over-QUIC (DoQ)** - 使用 QUIC 协议的 DNS 查询，低延迟（与 DoT 共用端口号但协议不同）
 - `813/tcp` - **DNS-over-HTTPS (DoH)** - 使用 HTTPS 加密的 DNS 查询，兼容性强
 - `813/tcp` - **DNS-over-HTTP/3 (DoH3)** - 基于 HTTP/3 协议的 DNS 查询（与 DoH 共用端口，通过 `http3: true` 启用），兼具低延迟与加密
-- `8853/udp` - **DNS-over-QUIC (DoQ)** - 使用 QUIC 协议的 DNS 查询，低延迟
 
 ## 构建信息
 

@@ -15,9 +15,9 @@ tls-port:
 # DNS-over-HTTPS (DoH) 监听端口
 https-port:
   - 813
-# DNS-over-QUIC (DoQ) 监听端口
+# DNS-over-QUIC (DoQ) 监听端口 (标准端口 UDP 853)
 quic-port:
-  - 8853
+  - 853
 # 启用 HTTP/3 支持 (DoH3 与 DoH 共用 https-port 端口)
 http3: true
 # 证书公钥
